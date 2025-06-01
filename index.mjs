@@ -19,7 +19,7 @@ import { postOrderDirectoryTraverse, preOrderDirectoryTraverse } from './utils/d
 import getCommand from './utils/getCommand.js'
 import sortDependencies from './utils/sortDependencies.js'
 import deepMerge from './utils/deepMerge.js'
-import pkg from './package.json' assert { type: 'json' }
+import pkg from './package.json' with { type: 'json' }
 
 const exec = util.promisify(execCallback)
 const __filename = fileURLToPath(import.meta.url)
@@ -219,7 +219,7 @@ async function init() {
 
   // if any of the feature flags is set, we would skip the feature prompts
 
-  let targetDir = argv._[0] // ? `create-${argv._[0]}` : ''
+  let targetDir = argv._[0]
   const defaultProjectName = !targetDir ? 'create-xx' : targetDir
 
   const forceOverwrite = argv.force
@@ -364,7 +364,7 @@ async function init() {
       }
     })
   )
-  console.log({ argv, normalizedArgv, targetDir, projectName })
+  console.log({ argv, normalizedArgv, targetDir, projectName, defaultProjectName })
   fs.writeFileSync(packageJsonPath, JSON.stringify(updatedPkg, null, 2) + '\n', 'utf-8')
 
   // An external data store for callbacks to share data
@@ -383,11 +383,28 @@ async function init() {
         const template = fs.readFileSync(filepath, 'utf-8')
         const dest = filepath.replace(/\.ejs$/, '')
         const commandContext = normalizedArgv
+
+        // 提取 CREATE_NAME：如果项目名以 "create-" 开头，则提取后面的部分
+        let createName = projectName
+        if (projectName.startsWith('create-')) {
+          createName = projectName.replace(/^create-/, '')
+        }
+
         const context = {
+          // 先设置默认值，避免EJS模板中变量不存在时报错
+          ALI_KEY: '',
+          ALI_SECRET: '',
+          DOMAIN: '',
+          CDN_DOMAIN: '',
+          NODE_ENV: 'development',
+          GITHUB_USER: 'xnscu',
+          GITHUB_SCOPE: 'private',
+          // 然后用实际值覆盖默认值
           ...envContext,
           ...dataStore[dest],
           ...commandContext,
           TARGET_DIR: targetDir,
+          CREATE_NAME: createName,
         }
         const content = ejs.render(template, context)
 
