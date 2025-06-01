@@ -272,13 +272,13 @@ async function init() {
         },
         {
           name: 'githubUser',
-          type: 'text',
+          type: normalizedArgv.GITHUB_USER ? null : 'text',
           message: 'GitHub user:',
           initial: 'xnscu'
         },
         {
           name:"githubScope",
-          type: 'select',
+          type: normalizedArgv.GITHUB_SCOPE ? null : 'select',
           message: 'GitHub scope:',
           initial: 0,
           choices: [
@@ -304,6 +304,8 @@ async function init() {
     // projectName = targetDir,
     // packageName = projectName ?? defaultProjectName,
     shouldOverwrite = argv.force,
+    githubUser = normalizedArgv.GITHUB_USER || 'xnscu',
+    githubScope = normalizedArgv.GITHUB_SCOPE || 'private',
   } = result
 
   const root = path.join(cwd, targetDir)
@@ -356,11 +358,11 @@ async function init() {
   const updatedPkg = sortDependencies(
     deepMerge(existingPkg, {
       name: projectName,
-      private: result.githubScope === 'private' ? true : false,
+      private: githubScope === 'private' ? true : false,
       scripts: {
-        'git': `./bin/init-github.sh ${result.githubScope} ${result.githubUser}`,
-        'set-g': `git remote set-url origin git@github.com:${result.githubUser}/${projectName}.git`,
-        'add-g': `git remote add origin git@github.com:${result.githubUser}/${projectName}.git`,
+        'git': `./bin/init-github.sh ${githubScope} ${githubUser}`,
+        'set-g': `git remote set-url origin git@github.com:${githubUser}/${projectName}.git`,
+        'add-g': `git remote add origin git@github.com:${githubUser}/${projectName}.git`,
       }
     })
   )
