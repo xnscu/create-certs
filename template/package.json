@@ -18,6 +18,16 @@
     "postg": "yarn postpush",
     "git": "bin/init-github.sh public xnscu",
     "lab": "./index.mjs",
+    "upload": "yarn ali:upload",
+    "cert": "yarn ali:cert",
+    "renew": "yarn ali:renew",
+    "set-renew": "./set-renew.sh",
+    "test": "dotenv -- bash -c 'echo $DOMAIN $DOMAIN $DOMAIN'",
+    "cf:cert": "dotenv -- bash -c 'certbot certonly --manual --preferred-challenges=dns --agree-tos --email 280145668@qq.com -d *.$DOMAIN -d $DOMAIN --manual-auth-hook ./cf_auth.sh --manual-cleanup-hook ./cf_clean.sh --no-eff-email'",
+    "cf:renew": "dotenv -- certbot renew --manual --preferred-challenges=dns --manual-auth-hook ./cf_auth.sh --manual-cleanup-hook ./cf_clean.sh",
+    "ali:cert": "dotenv -- bash -c 'certbot certonly --manual --preferred-challenges=dns --agree-tos --email 280145668@qq.com -d *.$DOMAIN -d $DOMAIN --manual-auth-hook /root/cert/aliyun_auth.py --manual-cleanup-hook /root/cert/aliyun_clean.py --no-eff-email'",
+    "ali:renew": "dotenv -- /usr/local/bin/certbot renew --manual --preferred-challenges=dns --manual-auth-hook /root/cert/aliyun_auth.py --manual-cleanup-hook /root/cert/aliyun_clean.py",
+    "ali:upload": "dotenv -- bash -c 'python3 /root/cert/aliyun_cdn_cert_upload.py'",
     "npm:reset": "rm -rf node_modules; rm package-lock.json; rm pnpm-lock.yaml; pnpm i"
   },
   "dependencies": {
