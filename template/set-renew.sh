@@ -1,0 +1,1 @@
+SLEEPTIME=$(awk 'BEGIN{srand(); print int(rand()*(3600+1))}'); echo "0 4 * * 1 root sleep $SLEEPTIME && cd /root/cert && yarn ali:renew" | sudo tee -a /etc/crontab > /dev/null

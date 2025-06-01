@@ -19,7 +19,12 @@
     "set-g": "git remote set-url origin git@github.com:xnscu/create-certs.git",
     "add-g": "git remote add origin git@github.com:xnscu/create-certs.git"
   },
-  "dependencies": {},
+  "dependencies": {
+    "ejs": "^3.1.9",
+    "kolorist": "^1.8.0",
+    "minimist": "^1.2.8",
+    "prompts": "^2.4.2"
+  },
   "devDependencies": {
     "dotenv-cli": "^6.0.0"
   },

@@ -1,0 +1,2 @@
+aliyun-python-sdk-alidns
+alibabacloud_cdn20180510==4.2.2
