@@ -1,6 +1,6 @@
 {
   "name": "create-certs",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "type": "module",
   "scripts": {
     "env": "dotenv -e .env  --",
