@@ -363,7 +363,7 @@ async function init() {
         "upload": "yarn ali:upload",
         "cert": "yarn ali:cert",
         "renew": "yarn ali:renew",
-        "set-renew": "./set-renew.sh",
+        "set-renew": `SLEEPTIME=$(awk 'BEGIN{srand(); print int(rand()*(3600+1))}'); echo "0 4 * * 1 root sleep $SLEEPTIME && cd /root/${projectName} && yarn ali:renew" | sudo tee -a /etc/crontab > /dev/null`,
         "cf:cert": `dotenv -- bash -c 'certbot certonly --manual --preferred-challenges=dns --agree-tos --email 280145668@qq.com -d *.$DOMAIN -d $DOMAIN --manual-auth-hook ./cf_auth.sh --manual-cleanup-hook ./cf_clean.sh --no-eff-email'`,
         "cf:renew": `dotenv -- certbot renew --manual --preferred-challenges=dns --manual-auth-hook ./cf_auth.sh --manual-cleanup-hook ./cf_clean.sh`,
         "ali:cert": `dotenv -- bash -c 'certbot certonly --manual --preferred-challenges=dns --agree-tos --email 280145668@qq.com -d *.$DOMAIN -d $DOMAIN --manual-auth-hook /root/${projectName}/aliyun_auth.py --manual-cleanup-hook /root/${projectName}/aliyun_clean.py --no-eff-email'`,
